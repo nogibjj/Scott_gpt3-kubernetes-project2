@@ -6,7 +6,7 @@ import os
 app = FastAPI()
 
 # Configure the OpenAI API key
-openai.api_key = "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"
+openai.api_key = os.environ['OPENAI_API_KEY']
 
 # Define the request model
 class Question(BaseModel):
