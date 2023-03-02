@@ -1,36 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-deployment
+  name: gpt3-deployment
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: gpt3
   template:
     metadata:
       labels:
-        app: my-app
+        app: gpt3
     spec:
       containers:
-        - name: my-app
-          image: scottlaiq/gpt3-kubernetes:latest
+        - name: gpt3-container
+          image: scottlaiq/gpt3-app:latest
           ports:
             - containerPort: 8080
           env:
             - name: OPENAI_API_KEY
-              value: ${OPENAI_API_KEY}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-app-service
-spec:
-  selector:
-    app: my-app
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 8080
-  type: LoadBalancer
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-key
+                  key: api-key
+
+
+
